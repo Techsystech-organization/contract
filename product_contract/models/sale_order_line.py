@@ -19,6 +19,13 @@ class SaleOrderLine(models.Model):
     _name = "sale.order.line"
     _inherit = ["sale.order.line", "sale.order.line.contract.mixin"]
 
+    skip_contract_configurator = fields.Boolean(
+        related="product_id.skip_contract_configurator",
+        string="Skip Contract Configurator",
+        readonly=True,
+        store=False,
+    )
+
     @api.constrains("contract_id")
     def _check_contact_is_not_terminated(self):
         for rec in self:
