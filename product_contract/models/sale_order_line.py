@@ -58,7 +58,7 @@ class SaleOrderLine(models.Model):
         )
         termination_notice_interval = self.product_id.termination_notice_interval
         termination_notice_rule_type = self.product_id.termination_notice_rule_type
-        return {
+        vals = {
             "sequence": self.sequence,
             "product_id": self.product_id.id,
             "name": self.name.split(":\n")[0],
@@ -81,7 +81,12 @@ class SaleOrderLine(models.Model):
             "sale_order_line_id": self.id,
             "predecessor_contract_line_id": predecessor_contract_line_id,
             "analytic_distribution": self.analytic_distribution,
+            "manual_renew_needed": self.product_id.manual_renew_needed,
         }
+        template = self.product_id.contract_line_name_template
+        if template:
+            vals["name"] = template
+        return vals
 
     def create_contract_line(self, contract):
         contract_line_model = self.env["contract.line"]
