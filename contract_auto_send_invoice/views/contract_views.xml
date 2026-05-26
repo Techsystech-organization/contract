@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_contract_form_auto_send_invoice" model="ir.ui.view">
+        <field name="name">contract.contract.form.auto.send.invoice</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml">
+            <field name="tag_ids" position="after">
+                <field name="auto_send_recurring_invoice" />
+            </field>
+        </field>
+    </record>
+</odoo>
