@@ -89,6 +89,10 @@ patch(SaleOrderLineProductField.prototype, {
     },
 
     async _openContractConfigurator(isNew = false) {
+        if (isNew && this.props.record.data.skip_contract_configurator) {
+            // Skip configurator popup when adding a product with skip flag
+            return;
+        }
         if (this.lastContractData) {
             const changes = Object.assign({}, this.lastContractData);
             this.lastContractData = false;

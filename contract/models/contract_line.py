@@ -323,6 +323,11 @@ class ContractLine(models.Model):
         store=True,
         currency_field="currency_id",
     )
+    manual_renew_needed = fields.Boolean(
+        string="Manual Renew Needed",
+        default=False,
+        help="If checked, contract renewals require manual approval.",
+    )
 
     @api.depends(
         "display_type",

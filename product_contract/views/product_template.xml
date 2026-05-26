@@ -15,15 +15,26 @@
                     <field name="is_contract" />
                     <label for="is_contract" />
                 </div>
+                <div invisible="is_contract == False">
+                    <group>
+                        <field name="property_contract_template_id"
+                               string="Contract Template"
+                               help="Optional. When set, all contract settings (recurrence, description, renewal) are taken from this template and the Contract tab below is hidden. When not set, you must configure contract behaviour directly on this product using the Contract tab." />
+                    </group>
+                </div>
             </xpath>
             <xpath expr="//notebook" position="inside">
                 <page
                     string="Contract"
                     name="contract"
-                    invisible="is_contract == False"
+                    invisible="is_contract == False or property_contract_template_id"
                 >
-                    <group>
-                        <field name="property_contract_template_id" />
+                    <group string="Description">
+                        <field name="contract_line_name_template" />
+                    </group>
+                    <group string="Behaviour">
+                        <field name="skip_contract_configurator" />
+                        <field name="manual_renew_needed" />
                     </group>
                     <group name="recurrence_info">
                         <group string="Duration">
