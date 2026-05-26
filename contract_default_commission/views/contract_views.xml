@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add agent button + commission status column to the fixed-date contract lines list
+         (shown when line_recurrence = False, which is the default) -->
+    <record id="view_contract_line_commission_fixed" model="ir.ui.view">
+        <field name="name">contract.contract.line.commission.fixed</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='contract_line_fixed_ids']//field[@name='discount']"
+                position="after"
+            >
+                <field name="commission_free" column_invisible="1" />
+                <button
+                    name="button_edit_agents"
+                    title="Agents &amp; Commissions"
+                    icon="fa-users"
+                    invisible="commission_free"
+                    type="object"
+                />
+                <field name="commission_status" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Same for the per-line-recurrence contract lines list
+         (shown when line_recurrence = True) -->
+    <record id="view_contract_line_commission_recurring" model="ir.ui.view">
+        <field name="name">contract.contract.line.commission.recurring</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_form_view" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='contract_line_ids']//field[@name='discount']"
+                position="after"
+            >
+                <field name="commission_free" column_invisible="1" />
+                <button
+                    name="button_edit_agents"
+                    title="Agents &amp; Commissions"
+                    icon="fa-users"
+                    invisible="commission_free"
+                    type="object"
+                />
+                <field name="commission_status" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List view for the contract.line.agent inline widget -->
+    <record id="view_contract_line_agent_list" model="ir.ui.view">
+        <field name="name">contract.line.agent.list</field>
+        <field name="model">contract.line.agent</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field
+                    name="agent_id"
+                    context="{'default_agent': True, 'default_customer': False, 'default_supplier': True}"
+                />
+                <field
+                    name="commission_id"
+                    domain="['|', ('settlement_type', '=', 'sale_invoice'), ('settlement_type', '=', False)]"
+                />
+                <field name="amount" />
+            </list>
+        </field>
+    </record>
+</odoo>

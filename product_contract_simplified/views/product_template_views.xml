@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Move contract template selector out of the tab, next to the is_contract checkbox -->
+    <record id="product_template_form_view_contract_template_moved" model="ir.ui.view">
+        <field name="name">product.template.form.contract.template.moved</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product_contract.product_template_form_contract_view" />
+        <field name="arch" type="xml">
+            <!-- Add template selector next to is_contract checkbox -->
+            <xpath expr="//field[@name='is_contract']/.." position="after">
+                <div invisible="is_contract == False">
+                    <group>
+                        <field name="property_contract_template_id"
+                               string="Contract Template"
+                               help="Optional. When set, all contract settings (recurrence, description, renewal) are taken from this template and the Contract tab below is hidden. When not set, you must configure contract behaviour directly on this product using the Contract tab." />
+                    </group>
+                </div>
+            </xpath>
+
+            <!-- Remove template selector from inside the contract tab -->
+            <xpath expr="//page[@name='contract']//field[@name='property_contract_template_id']" position="replace" />
+
+            <!-- Hide contract tab when a template is selected -->
+            <xpath expr="//page[@name='contract']" position="attributes">
+                <attribute name="invisible">is_contract == False or property_contract_template_id</attribute>
+            </xpath>
+
+            <!-- Add skip configurator and manual renew fields -->
+            <xpath expr="//page[@name='contract']//group[@name='recurrence_info']" position="before">
+                <group string="Behaviour">
+                    <field name="skip_contract_configurator" />
+                    <field name="manual_renew_needed" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
